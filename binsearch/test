@@ -1,0 +1,55 @@
+def check(i,j,k):
+    if j-k<0 or j+2*k>m or i+3*k>n:
+        return False
+     
+    for x in range(k):
+        good_row = True 
+        if field[i+x][j+k] - field[i+x][j] != k:
+            good_row = False 
+        if not good_row:
+            return False  
+
+    for x in range(k):
+        good_row = True 
+        if field[i+k+x][j+2*k] - field[i+k+x][j-k] != 3*k:
+            good_row = False
+        if not good_row:
+            return False 
+    
+    for x in range(k):
+        good_row = True 
+        if field[i+2*k+x][j+k] - field[i+2*k+x][j] !=k:
+            good_row = False
+        if not good_row:
+            return False
+    return True 
+
+def f(x):
+    for i in range(n):
+        for j in range(m):
+            if check(i,j,x):
+                return True 
+    return False 
+
+n, m = map(int, input().split())
+field = [None for i in range(n)]
+
+for i in range(n):
+    a = list(input())
+    pref = [0 for i in range(m+1)]
+    for j in range(1,m+1):
+        d = 1 if a[j-1] == '#' else 0
+        pref[j] = pref[j-1] + d
+    field[i] = pref 
+
+L = 0
+R = min(n,m)
+
+while R - L > 1:
+    mid = (L+R)//2
+    if not f(mid):
+        R = mid
+    else:
+        L = mid 
+
+print(L)
